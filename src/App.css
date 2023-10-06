@@ -19,12 +19,9 @@ body {
 }
 
 .image-background {
-  transition: background-image 1s;
+  transition: background-image 0.2s;
 }
 
-option {
-  border: solid rebeccapurple;
-}
 
 .form-container {
   background-color: rgba(255, 255, 255, 0.9);
@@ -55,7 +52,8 @@ option {
   font-size: 16px;
   margin-bottom: 20px;
 }
-.form-input{
+
+.form-input {
   width: 94%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -101,11 +99,117 @@ option {
 }
 
 .form-button:hover {
-  background-color: #0056b3;
+  background-color: #3498db;
 }
 
-.heading{
-  color: rebeccapurple;
+.heading {
+  color: #4285F4;
   text-align: left;
   margin-bottom: 40px;
 }
+
+
+/* CongratulationsForm.css */
+
+/* Custom Modal Styles */
+.custom-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1f3f3;
+  padding: 30px;
+  border-radius: 10px;
+  /* width: 80%; */
+  max-width: 400px;
+  min-width: 400px;
+  height: 500px;
+  /* text-align: center; */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  color: #4285F4;
+  font-size: 28px;
+}
+
+/* Close Button Styles */
+.close-button {
+  background-color: #FFC107;
+  /* Google Yellow */
+  color: #333333;
+  /* Dark text color */
+  border: none;
+  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  bottom: 0;
+  margin-bottom: 20px;
+  margin-left: 150px;
+  position: fixed;
+}
+
+.close-button:hover {
+  background-color: #FFA000;
+  /* Slightly darker yellow on hover */
+  transform: scale(1.05);
+}
+
+.close-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
+  /* Yellow outline on focus */
+}
+
+/* Modal Overlay Styles */
+.custom-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* -=-=-=-=-=-=-=-=-=- */
+.datePickerLibraryDiv {
+  width: 390px;
+  height: 34px;
+  opacity: 0;
+  position: absolute;
+
+  margin-top: -55px;
+  margin-left: -200px;
+  cursor: pointer;
+}
+
+.react-datepicker-popper {
+  margin-left: -200px;
+  margin-top: -32px;
+  /* border: solid rebeccapurple; */
+
+}
+
+.react-datepicker {}
+
+.react-datepicker__triangle {
+  opacity: 0;
+}
+
+.react-datepicker__month-container {
+  border: 2px solid #ccc;
+  font-size: 15px;
+}
+
+.react-datepicker__time-container {
+  border: 2px solid #ccc;
+  font-size: 15px;
+}
+
+.react-datepicker__time-list {}
