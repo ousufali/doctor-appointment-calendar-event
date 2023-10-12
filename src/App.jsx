@@ -101,27 +101,19 @@ const App = ({ doctor_availability }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-  // useEffect(() => {
-
-  // }, [])
-
   const handleHospitalChange = (selected_event, is_hospital_selection) => {
     if (is_hospital_selection) {
-      // console.log("selected_value:  ",selected_event)
       setSelectedHospital(selected_event.value)
       changeBackground(setBackgroundImage, selected_event.value)
     }
-    else {
-      // time selected here
-    }
+
 
 
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("name:", name, "hospital:", selectedHospital, "dateTime:", dateTime, )
+    console.log("name:", name, "hospital:", selectedHospital, "dateTime:", dateTime,)
     setIsModalOpen(true)
   };
 
@@ -154,16 +146,13 @@ const App = ({ doctor_availability }) => {
           <label className="form-label" htmlFor="name">
             Visit Location
           </label>
-          <SelectComponent options={hospitals_array} changeHandler={handleHospitalChange} is_hospital_selection={true} placeholder={"Select a hospital"} />
+          <SelectComponent options={hospitals_array} changeHandler={handleHospitalChange} is_hospital_selection={true} placeholder={"Select a hospital"} is_required={true} />
 
 
           <label className="form-label" htmlFor="name" style={{ marginTop: "15px" }}>
             Consultation time
           </label>
-          <DateTimePicker onChange={setDateTime} placeholder={dateTime} />
-
-          {/* <SelectComponent options={timeSlotsArray} changeHandler={handleHospitalChange} is_hospital_selection={false} placeholder={"Date and Time"} /> */}
-
+          <DateTimePicker selectedHospital={selectedHospital} onChange={setDateTime} placeholder={dateTime} />
 
           <button className="form-button" type="submit" style={{ marginTop: "50px" }}>
             Book an Appointment
@@ -177,8 +166,11 @@ const App = ({ doctor_availability }) => {
         className="custom-modal"
         overlayClassName="custom-overlay"
       >
-        <h2 className="modal-title">Reservation confirmed for <div style={{ color: "#FFA000", display: 'inline' }}> {name} </div></h2>
-        <p style={{ color: "#0F9D58" }}>
+        <h2 className="modal-title">
+          Reservation confirmed <div style={{ color: "#FFA000", display: 'inline' }}> {name} </div>
+          for <div style={{ color: "#0F9D58", display: 'inline' }}>{dateTime} </div>
+        </h2>
+        <p style={{ color: "#DB4437" }}>
           Calendar event is created.
         </p>
         <button

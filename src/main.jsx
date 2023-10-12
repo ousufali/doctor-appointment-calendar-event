@@ -10,6 +10,8 @@ const doctor_availability =
   BellevueHospitalCenter: [8,0],
 }
 
+console.log("-=-=-=-=-=-==-",)
+
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

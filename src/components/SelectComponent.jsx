@@ -48,9 +48,10 @@ const customStyles = {
 };
 
 
-function CustomSelect({ options, placeholder, changeHandler , is_hospital_selection}) {
+function CustomSelect({ options, placeholder, changeHandler , is_hospital_selection, is_required}) {
     return (
         <Select
+            required = {is_required}
             options={options}
             styles={customStyles}
             isSearchable={false}
