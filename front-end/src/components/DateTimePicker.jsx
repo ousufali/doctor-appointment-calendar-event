@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import setHours from "date-fns/setHours";
-// import setMinutes from "date-fns/setMinutes";
 
 import SeleclComponent from "./SelectComponent"
-import { tr } from 'date-fns/locale';
 
 function getNextValidDate(date) {
   if (date.getDay() === 0) {
@@ -78,8 +75,7 @@ console.log("BellevueHospitalCenter_excluded_time",typeof(LenoxHillHospital_excl
 
 
 
-const DateTimePicker = ({ onChange, placeholder, selectedHospital }) => {
-
+const DateTimePicker = ({ onChange, placeholder, selectedHospital ,startDate, setStartDate}) => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
@@ -87,13 +83,15 @@ const DateTimePicker = ({ onChange, placeholder, selectedHospital }) => {
     if (selectedHospital) {
       setIsDisabled(false)
       onChange("Select Date and Time")
-      console.log("selsa", selectedHospital)
+      console.log("selectedHospital", selectedHospital)
 
     }
 
   }, [selectedHospital])
 
   const handleChange = (date) => {
+    setStartDate(date)
+    console.log("handleChange:  ",date)
     const options = {
       year: 'numeric',
       month: 'long',
@@ -129,7 +127,7 @@ const DateTimePicker = ({ onChange, placeholder, selectedHospital }) => {
         className='datePickerLibraryDiv'
         onChange={handleChange}
         showTimeSelect
-
+        
         dateFormat="MMMM d, yyyy h:mm aa"
         excludeDates={[sunday]}
         minDate={minDate}
@@ -140,7 +138,7 @@ const DateTimePicker = ({ onChange, placeholder, selectedHospital }) => {
         disabled={isDisabled}
 
         onInputClick={handleDateClick}
-
+        selected={startDate}
 
       />
     </div>

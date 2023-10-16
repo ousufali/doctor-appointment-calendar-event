@@ -48,7 +48,7 @@ const customStyles = {
 };
 
 
-function CustomSelect({ options, placeholder, changeHandler , is_hospital_selection, is_required}) {
+function CustomSelect({ options, placeholder, changeHandler , is_hospital_selection, is_required, selected_value}) {
     return (
         <Select
             required = {is_required}
@@ -60,6 +60,7 @@ function CustomSelect({ options, placeholder, changeHandler , is_hospital_select
                 console.log("event: ",event)
                 changeHandler(event, is_hospital_selection)
             }}
+            value={selected_value}
         />
     );
 }

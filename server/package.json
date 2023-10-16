@@ -1,16 +1,27 @@
 {
-  "name": "calender-event",
+  "name": "Calendar event",
   "version": "1.0.0",
   "description": "",
-  "main": "calender-event.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node calender-event.js"
+    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start": "NODE_ENV=production node index.js"
   },
-  "author": "Yousuf",
+  "author": "yousuf",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "googleapis": "^127.0.0"
+  },
+  "devDependencies": {
     "dotenv": "^16.3.1",
-    "googleapis": "^126.0.1"
+    "lodash": "^4.17.21",
+    "nodemon": "^3.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

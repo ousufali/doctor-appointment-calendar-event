@@ -1,30 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+
+
 import './App.css';
 import SelectComponent from './components/SelectComponent';
-import DateTimePicker from "./components/DateTimePicker"
-
-import hospital from "./images/hospital.jpeg"
-import bhc from './images/BELLEVUE-HOSPITAL-CENTER.jpg'
-import cph from "./images/COLUMBIA-PRESBYTERIAN-HOSPITAL.jpg"
-import lhh from './images/LENOX-HILL-HOSPITAL.jpg'
-
+import DateTimePicker from "./components/DateTimePicker";
+import CalendarService from "./services/calendar"
 import Modal from 'react-modal';
 Modal.setAppElement('#root'); // Set the root element for modal accessibility
-
-
-const bimage = {
-  content: '""',
-  backgroundImage: `url(${hospital})`, // Replace with your image path
-  backgroundSize: 'cover',
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  // opacity: 0.3, // Adjust the opacity here (0.0 to 1.0)
-  zIndex: -1, // This places the pseudo-element below the content
-  filter: 'brightness(40%)',
-};
 
 const hospitals_array = [
   { value: 'BellevueHospitalCenter', label: 'Bellevue Hospital Center' },
@@ -32,90 +16,54 @@ const hospitals_array = [
   { value: 'ColumbiaPresbyterianHospital', label: 'Columbia Presbyterian Hospital' },
 
 ]
+const description = "The patient is an individual who needs medical evaluation and care, and you are the attending doctor who is responsible for their examination and treatment."
 
 
-const changeBackground = (setBackgroundImage, selectedOption) => {
-  console.log("selectedHospital:", selectedOption)
 
-  switch (selectedOption) {
-    case "BellevueHospitalCenter":
-      setBackgroundImage({
-        // content: '""',
-        backgroundImage: `url(${bhc})`,
-        backgroundSize: 'cover',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        // opacity: 0.3,
-        filter: 'brightness(40%)',
-        zIndex: -1,
-      });
-      break;
-    case "ColumbiaPresbyterianHospital":
-      setBackgroundImage({
-        // content: '""',
-        backgroundImage: `url(${cph})`,
-        backgroundSize: 'cover',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        // opacity: 0.3,
-        filter: 'brightness(40%)',
-        zIndex: -1,
-      });
-      break;
-    case "LenoxHillHospital":
-      console.log("asdasdasd")
-      setBackgroundImage({
-        // content: '""',
-        backgroundImage: `url(${lhh})`,
-        backgroundSize: 'cover',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        filter: 'brightness(40%)',
-        // opacity: 0.3,
-        zIndex: -1,
-      });
-      break;
-
-    default:
-      setBackgroundImage(bimage)
-      break;
-  }
-};
-
-
-const App = ({ doctor_availability }) => {
-  const [backgroundImage, setBackgroundImage] = useState(bimage);
-
-  const [selectedHospital, setSelectedHospital] = useState(null); // Default background image
-  const [name, setName] = useState(''); // Default background image
-  const [dateTime, setDateTime] = useState("Select Date and Time"); // Default background image
-
+const App = ({ changeBackground }) => {
+  const [backgroundImage, setBackgroundImage] = useState(changeBackground(() => { }, "x"));
+  const [selectedHospital, setSelectedHospital] = useState(undefined);
+  const [name, setName] = useState('');
+  const [dateTime, setDateTime] = useState("Select Date and Time");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLoader, setShowLoader] = useState(false)
+  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0),);
+
 
   const handleHospitalChange = (selected_event, is_hospital_selection) => {
     if (is_hospital_selection) {
-      setSelectedHospital(selected_event.value)
+      // setSelectedHospital(selected_event.value)
+      setSelectedHospital(selected_event)
+      console.log(selected_event, "selected_event")
       changeBackground(setBackgroundImage, selected_event.value)
     }
+}
 
-
-
-  }
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    
     console.log("name:", name, "hospital:", selectedHospital, "dateTime:", dateTime,)
-    setIsModalOpen(true)
+    if (dateTime !== "Select Date and Time") {
+      setShowLoader(true)
+      const is_created = await CalendarService.create_event({ name, selectedHospital, dateTime, description })
+      console.log("is_event_created:  ", is_created)
+      if (is_created) {
+        setShowLoader(false)
+        setIsModalOpen(true)
+      }
+    } else {
+      console.log("Seclect date please.")
+    }
+
   };
+  const closePopUp = () => {
+    setIsModalOpen(false)
+    setName('')
+    setSelectedHospital([])
+    changeBackground(setBackgroundImage, "default")
+    setDateTime("Select Date and Time")
+    setStartDate(setHours(setMinutes(new Date(), 0), 0),)
+  }
 
   return (
     <div className="form-background" >
@@ -123,9 +71,6 @@ const App = ({ doctor_availability }) => {
 
       <div className="form-container">
         <h1 className='heading'>Appointment Booking Form</h1>
-
-
-
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -146,17 +91,19 @@ const App = ({ doctor_availability }) => {
           <label className="form-label" htmlFor="name">
             Visit Location
           </label>
-          <SelectComponent options={hospitals_array} changeHandler={handleHospitalChange} is_hospital_selection={true} placeholder={"Select a hospital"} is_required={true} />
+          <SelectComponent selected_value={selectedHospital} options={hospitals_array} changeHandler={handleHospitalChange} is_hospital_selection={true} placeholder={'Select hospital'} is_required={true} />
 
 
           <label className="form-label" htmlFor="name" style={{ marginTop: "15px" }}>
             Consultation time
           </label>
-          <DateTimePicker selectedHospital={selectedHospital} onChange={setDateTime} placeholder={dateTime} />
-
-          <button className="form-button" type="submit" style={{ marginTop: "50px" }}>
-            Book an Appointment
-          </button>
+          <DateTimePicker selectedHospital={selectedHospital} onChange={setDateTime} placeholder={dateTime} startDate={startDate} setStartDate={setStartDate} />
+          <div style={{display: "flex"}}>
+            <button className="form-button" type="submit" style={{ marginTop: "50px" }}>
+              Book an Appointment
+            </button>
+            {showLoader ? <div class="loader"></div> : <></>}  
+          </div>
         </form>
       </div>
       <Modal
@@ -171,11 +118,11 @@ const App = ({ doctor_availability }) => {
           for <div style={{ color: "#0F9D58", display: 'inline' }}>{dateTime} </div>
         </h2>
         <p style={{ color: "#DB4437" }}>
-          Calendar event is created.
+          Created calendar event for doctor.
         </p>
         <button
           className="close-button"
-          onClick={() => setIsModalOpen(false)}
+          onClick={closePopUp}
         >
           Close
         </button>

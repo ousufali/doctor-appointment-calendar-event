@@ -97,6 +97,31 @@ body {
   display: flex;
   margin-top: 10px;
 }
+.loader {
+  border-radius: 50%;
+  border:         2px solid #f2f2f2;
+  border-top:     2px solid #007bff;
+  border-left:    2px solid #007bff;
+  border-bottom:  2px solid #007bff;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 2s linear infinite;
+  
+  margin-top: 54px;
+  margin-left: 150px;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 .form-button:hover {
   background-color: #3498db;
